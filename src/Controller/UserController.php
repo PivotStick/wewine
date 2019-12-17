@@ -13,13 +13,13 @@ class UserController
      * @param $userCrud
      * @param $userId
      */
-    public function getOneById(UserCRUD $userCrud, int $userId)
+    public function getOneById(UserCRUD $userCrud, $userId)
     {
 
     }
 
     /**
-     * @Route("api/users/create, name="create_user")
+     * @Route("api/users/create", name="create_user")
      * @param UserCRUD $userCrud
      */
     public function createUser(UserCRUD $userCrud)
@@ -30,19 +30,19 @@ class UserController
     /**
      * @Route("api/users/update/{userId}", name="update_user")
      * @param UserCRUD $userCrud
-     * @param int $userId
+     * @param $userId
      */
-    public function updateUser(UserCRUD $userCrud, int $userId)
+    public function updateUser(UserCRUD $userCrud, $userId)
     {
 
     }
 
     /**
-     * @Route("api/users/delete/{userId}, name="delete_user")
+     * @Route("api/users/delete/{userId}", name="delete_user")
      * @param UserCRUD $userCrud
-     * @param int $userId
+     * @param  $userId
      */
-    public function deleteUser(UserCRUD $userCrud, int $userId)
+    public function deleteUser(UserCRUD $userCrud, $userId)
     {
 
     }

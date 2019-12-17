@@ -65,9 +65,18 @@ class User
      */
     private $listCellars;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Opinion", mappedBy="user")
+     * @var ArrayCollection|User[]
+     */
+    private $opinions;
+
+
     public function __construct()
     {
         $this->listCellars = new ArrayCollection();
+        $this->opinions = new ArrayCollection();
+
     }
 
     public function getId(): ?string

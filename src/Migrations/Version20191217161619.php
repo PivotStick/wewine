@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20191217144521 extends AbstractMigration
+final class Version20191217161619 extends AbstractMigration
 {
     public function getDescription() : string
     {
@@ -22,7 +22,9 @@ final class Version20191217144521 extends AbstractMigration
         // this up() migration is auto-generated, please modify it to your needs
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql', 'Migration can only be executed safely on \'mysql\'.');
 
-        $this->addSql('CREATE TABLE wine (id BIGINT AUTO_INCREMENT NOT NULL, name VARCHAR(255) NOT NULL, domain VARCHAR(255) NOT NULL, vintage VARCHAR(5) NOT NULL, description LONGTEXT NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
+        $this->addSql('ALTER TABLE opinion DROP FOREIGN KEY FK_AB02B0276B3CA4B');
+        $this->addSql('ALTER TABLE opinion CHANGE id_user id_user BIGINT NOT NULL');
+        $this->addSql('ALTER TABLE opinion ADD CONSTRAINT FK_AB02B0276B3CA4B FOREIGN KEY (id_user) REFERENCES user (id)');
     }
 
     public function down(Schema $schema) : void
@@ -30,6 +32,8 @@ final class Version20191217144521 extends AbstractMigration
         // this down() migration is auto-generated, please modify it to your needs
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql', 'Migration can only be executed safely on \'mysql\'.');
 
-        $this->addSql('DROP TABLE wine');
+        $this->addSql('ALTER TABLE opinion DROP FOREIGN KEY FK_AB02B0276B3CA4B');
+        $this->addSql('ALTER TABLE opinion CHANGE id_user id_user INT DEFAULT NULL');
+        $this->addSql('ALTER TABLE opinion ADD CONSTRAINT FK_AB02B0276B3CA4B FOREIGN KEY (id_user) REFERENCES opinion (id) ON UPDATE NO ACTION ON DELETE NO ACTION');
     }
 }

@@ -3,6 +3,7 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -12,7 +13,7 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Opinion
 {
-    //private $id_user;
+
 
     //private $id_bottle;
 
@@ -41,6 +42,20 @@ class Opinion
      * @var int
      */
     private $rating;
+
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="opinions")
+     * @ORM\JoinColumn(name="id_user", referencedColumnName="id", nullable=false)
+     * @var User
+     */
+    private $user;
+
+    public function __construct()
+    {
+        $this->user = new ArrayCollection();
+    }
+
 
     public function getId(): ?int
     {

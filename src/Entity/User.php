@@ -61,7 +61,7 @@ class User
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Cellar", mappedBy="owner")
-     * @var ArrsayCollection|Cellar[]
+     * @var ArrayCollection|Cellar[]
      */
     private $listCellars;
 

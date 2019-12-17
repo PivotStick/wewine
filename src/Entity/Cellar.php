@@ -32,9 +32,11 @@ class Cellar
     private $name;
 
     /**
-     * @ORM\Column(name="owner", type="string", nullable=false)
+     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="listCellars")
+     * @ORM\JoinColumn(name="id_user", referencedColumnName="id")
+     * @var User
      */
-    private $owner;
+    private User $owner;
 
     public function getId(): ?int
     {

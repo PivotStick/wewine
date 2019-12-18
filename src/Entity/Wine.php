@@ -18,7 +18,6 @@ class Wine
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue(strategy="AUTO")
-     *
      * @ORM\Column(name="id", type="bigint")
      * @var int
      */
@@ -48,8 +47,6 @@ class Wine
      */
     private string $description;
 
-
-    //private $cave;
 
 
     public function getId(): ?int

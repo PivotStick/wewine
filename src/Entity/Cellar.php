@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -37,6 +38,19 @@ class Cellar
      * @var User
      */
     private User $owner;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="Wine")
+     * @ORM\JoinTable(name="cellar_wine", joinColumns={@ORM\JoinColumn(name="cellar_id", referencedColumnName="id")},
+     *     inverseJoinColumns={@ORM\JoinColumn(name="wine_id", referencedColumnName="id")})
+     */
+    private $wines;
+
+    public function __construct()
+    {
+        $this->wines = new ArrayCollection();
+    }
+
 
     public function getId(): ?int
     {

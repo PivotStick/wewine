@@ -5,59 +5,62 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * Class User
  * @package App\Entity
  * @ORM\Table(name="user")
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
+ * @UniqueEntity(fields={"mail"}, message="There is already an account with this mail")
  */
-class User
+class User implements UserInterface
 {
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue(strategy="AUTO")
      *
-     * @ORM\Column(name="id", type="bigint")
+     * @ORM\Column(name="id", type="bigint", unique=true)
      * @var int
      */
-    private int $id;
+    private $id;
 
     /**
-     * @ORM\Column(name="email", type="string", length=255, nullable=false)
+     * @ORM\Column(name="mail", type="string", length=255, nullable=false)
      * @var string;
      */
-    private string $mail;
+    private $mail;
 
     /**
      * @ORM\Column(name="password", type="string", length=255, nullable=false)
      * @var string
      */
-    private string $password;
+    private $password;
 
     /**
      * @ORM\Column(name="firstname", type="string", length=255, nullable=false)
      * @var string
      */
-    private string $firstname;
+    private $firstname;
 
     /**
      * @ORM\Column(name="lastname", type="string", length=255, nullable=false)
      * @var string
      */
-    private string $lastname;
+    private $lastname;
 
     /**
-     * @ORM\Column(name="avatar", type="string", length=255)
+     * @ORM\Column(name="avatar", type="string", length=255, nullable=true)
      * @var string
      */
-    private string $avatar;
+    private $avatar;
 
     /**
-     * @ORM\Column(name="grade",  type="string", length=255, nullable=false)
+     * @ORM\Column(name="grade",  type="string", length=255, nullable=true)
      * @var string
      */
-    private string $grade;
+    private $grade;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Cellar", mappedBy="owner")
@@ -71,6 +74,12 @@ class User
      */
     private $opinions;
 
+    /**
+     * @ORM\Column(type="json")
+     * @var array
+     */
+    private $roles = [];
+
 
     public function __construct()
     {
@@ -79,7 +88,7 @@ class User
 
     }
 
-    public function getId(): ?string
+    public function getId(): ?int
     {
         return $this->id;
     }
@@ -96,6 +105,9 @@ class User
         return $this;
     }
 
+    /**
+     * @see UserInterface
+     */
     public function getPassword(): ?string
     {
         return $this->password;
@@ -113,6 +125,10 @@ class User
         return $this->firstname;
     }
 
+    /**
+     * @param string $firstname
+     * @return $this
+     */
     public function setFirstname(string $firstname): self
     {
         $this->firstname = $firstname;
@@ -157,6 +173,53 @@ class User
     }
 
     /**
+     * A visual identifier that represents this user.
+     *
+     * @see UserInterface
+     */
+    public function getUsername(): string
+    {
+        $userName = $this->getFirstname() . " " . $this->getLastname();
+        return (string) $userName;
+    }
+
+    /**
+     * @see UserInterface
+     */
+    public function getRoles(): array
+    {
+        $roles = $this->roles;
+        // guarantee every user at least has ROLE_USER
+        $roles[] = 'ROLE_USER';
+
+        return array_unique($roles);
+    }
+
+    public function setRoles(array $roles): self
+    {
+        $this->roles = $roles;
+
+        return $this;
+    }
+
+    /**
+     * @see UserInterface
+     */
+    public function getSalt()
+    {
+        // not needed when using the "bcrypt" algorithm in security.yaml
+    }
+
+    /**
+     * @see UserInterface
+     */
+    public function eraseCredentials()
+    {
+        // If you store any temporary, sensitive data on the user, clear it here
+        // $this->plainPassword = null;
+    }
+
+    /**
      * @return Collection|Cellar[]
      */
     public function getListCellars(): Collection
@@ -188,8 +251,35 @@ class User
     }
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Cellar", mappedBy="owner")
-     * @var ArrayCollection|Cellar[]
+     * @return Collection|Opinion[]
      */
-    //private $idCellarList;
+    public function getOpinions(): Collection
+    {
+        return $this->opinions;
+    }
+
+    public function addOpinion(Opinion $opinion): self
+    {
+        if (!$this->opinions->contains($opinion)) {
+            $this->opinions[] = $opinion;
+            $opinion->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeOpinion(Opinion $opinion): self
+    {
+        if ($this->opinions->contains($opinion)) {
+            $this->opinions->removeElement($opinion);
+            // set the owning side to null (unless already changed)
+            if ($opinion->getUser() === $this) {
+                $opinion->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+
 }

@@ -6,6 +6,7 @@ use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ObjectRepository;
 
+
 class UserCRUD
 {
     /**
@@ -31,11 +32,20 @@ class UserCRUD
 
     /**
      * @param int $id
-     * @return User
+     * @return object
      */
-    public function getOneById(int $id): User
+    public function getOneById(int $id): object
     {
         return $this->repo->find($id);
+    }
+
+    /**
+     * @param string $mail
+     * @return bool
+     */
+    public function hasMail(string $mail): bool
+    {
+        return !empty($this->repo->findBy(['mail'=>$mail]));
     }
 
     /**

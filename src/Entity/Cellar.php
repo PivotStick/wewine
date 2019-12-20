@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -13,7 +14,7 @@ class Cellar
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue(strategy="AUTO")
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="integer", unique=true)
      */
     private $id;
 
@@ -101,6 +102,32 @@ class Cellar
     public function setOwner(string $owner): self
     {
         $this->owner = $owner;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Wine[]
+     */
+    public function getWines(): Collection
+    {
+        return $this->wines;
+    }
+
+    public function addWine(Wine $wine): self
+    {
+        if (!$this->wines->contains($wine)) {
+            $this->wines[] = $wine;
+        }
+
+        return $this;
+    }
+
+    public function removeWine(Wine $wine): self
+    {
+        if ($this->wines->contains($wine)) {
+            $this->wines->removeElement($wine);
+        }
 
         return $this;
     }

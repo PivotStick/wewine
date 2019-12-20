@@ -4,10 +4,21 @@ namespace App\Controller;
 
 use App\CRUD\UserCRUD;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
 class UserController
 {
+    /**
+     * @Route("api/users/getAll", name="get_all")
+     * @param UserCRUD $userCRUD
+     * @param Request $request
+     */
+    public function getAll(UserCRUD $userCRUD, Request $request)
+    {
+
+    }
+
     /**
      * @Route("api/users/get/{userId}", name="get_user_by_id")
      * @param $userCrud

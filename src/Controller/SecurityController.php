@@ -15,11 +15,12 @@ class SecurityController extends AbstractController
      * @return JsonResponse
      */
     public function login()
+
     {
+
         $data = [];
         $error = false;
         $msg_error = "";
-
 
         return new JsonResponse(
             [

@@ -51,13 +51,9 @@ class AppCustomAuthenticator extends AbstractFormLoginAuthenticator
 
     public function getCredentials(Request $request)
     {
-        dump($request->getContent());
-
-
         $dataJson = $request->getContent();
         $dataObject = json_decode($dataJson, false);
 
-        dump('DEBUG');
         $credentials = [
             'mail' => $dataObject->mail,
             'password' => $dataObject->password,
